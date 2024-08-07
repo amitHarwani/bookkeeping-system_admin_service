@@ -47,8 +47,8 @@ export const checkAccess = (featureId: number, companyId?: number | null) => {
                 );
             } catch (err) {
                 const error = err as AxiosError<ApiError>;
-
-                throw error.response?.data;
+                const errorData = error.response?.data || {statusCode: 500, message: "", errors: [], stack: ""};
+                throw new ApiError(errorData.statusCode, errorData.message, errorData.errors, errorData.stack);
             }
 
 
@@ -56,6 +56,7 @@ export const checkAccess = (featureId: number, companyId?: number | null) => {
 
             /* Next route if user is authorized */
             if (responseData.data.isAuthorized) {
+                req.user = responseData.data.user;
                 next();
             } else {
                 throw new ApiError(403, "unauthorized", []);

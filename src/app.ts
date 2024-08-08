@@ -29,15 +29,15 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* Feature Routes */
+/* Routes */
 import featureRouter from "./routes/feature.routes";
+import countryRouter from "./routes/country.routes";
+import taxDetailsRouter from "./routes/taxdetails.routes";
 
 app.use("/sysadmin", featureRouter);
+app.use("/sysadmin", countryRouter);
+app.use("/sysadmin", taxDetailsRouter);
 
-/* Country Routes */
-import countryRouter from "./routes/country.routes";
-
-app.use("/sysadmin", countryRouter)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof PostgresError) {

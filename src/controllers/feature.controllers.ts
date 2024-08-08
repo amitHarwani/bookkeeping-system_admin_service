@@ -52,6 +52,10 @@ export const updateFeature = asyncHandler(
             .where(eq(platformFeatures.featureId, body.featureId))
             .returning();
 
+        if(!recordUpdated.length){
+            throw new ApiError(400, "feature not found", []);
+        }
+
         return res.status(200).json(
             new ApiResponse<UpdateFeatureResponse>(200, {
                 feature: recordUpdated[0],

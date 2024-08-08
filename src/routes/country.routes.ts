@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { addCountry, getAllCountries } from "../controllers/county.controllers";
-import { addCountryValidator, getCountryByIdValidator } from "../validators/country.validators";
+import { addCountry, getAllCountries, updateCountry } from "../controllers/country.controllers";
+import { addCountryValidator, getCountryByIdValidator, updateCountryValidator } from "../validators/country.validators";
 import { validateInput } from "../validators";
 import { checkAccess } from "../middlewares/auth.middleware";
 
@@ -11,5 +11,7 @@ router.get("/get-all-countries", getAllCountries);
 router.get("/get-country/:countryId", getCountryByIdValidator(), validateInput);
 
 router.post("/add-country", addCountryValidator(), validateInput, checkAccess(3, null), addCountry)
+
+router.put("/update-country", updateCountryValidator(), validateInput, checkAccess(4, null), updateCountry);
 
 export default router;

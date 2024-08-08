@@ -11,6 +11,10 @@ import {
     AddCountryRequest,
     AddCountryResponse,
 } from "../dto/country/add_country_dto";
+import {
+    UpdateCountryRequest,
+    UpdateCountryResponse,
+} from "../dto/country/update_country_dto";
 
 export const getAllCountries = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -67,6 +71,36 @@ export const addCountry = asyncHandler(
             new ApiResponse<AddCountryResponse>(201, {
                 country: countriesAdded[0],
                 message: "country added successfully",
+            })
+        );
+    }
+);
+
+export const updateCountry = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const body = req.body as UpdateCountryRequest;
+
+        /* Update country details by countryId */
+        const updatedCountry = await db
+            .update(countries)
+            .set({
+                countryName: body.countryName,
+                phoneNumberCodes: body.phoneNumberCodes,
+                currency: body.currency,
+                maxPhoneNumberDigits: body.maxPhoneNumberDigits,
+            })
+            .where(eq(countries.countryId, body.countryId))
+            .returning();
+
+        /* When countryId is invalid */
+        if(!updatedCountry.length){
+            throw new ApiError(400, "country not found", []);
+        }
+
+        return res.status(200).json(
+            new ApiResponse<UpdateCountryResponse>(200, {
+                country: updatedCountry[0],
+                message: "country updated successfully",
             })
         );
     }

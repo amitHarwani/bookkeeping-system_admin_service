@@ -25,3 +25,21 @@ export const addCountryValidator = () => {
         body("maxPhoneNumberDigits").isInt().withMessage("invalid maxPhoneNumberDigits")
     ];
 };
+
+export const updateCountryValidator = () => {
+    return [
+        body("countryId")
+            .isInt()
+            .withMessage("invalid country id"),
+        body("countryName")
+            .isString()
+            .withMessage("invalid country name")
+            .trim()
+            .notEmpty()
+            .withMessage("country name is required")
+            .escape(),
+        body("phoneNumberCodes").isArray({min: 1}).withMessage("invalid phoneNumberCodes"),
+        body("currency").isString().withMessage("invalid currency").trim().notEmpty().withMessage("currency is required").escape(),
+        body("maxPhoneNumberDigits").isInt().withMessage("invalid maxPhoneNumberDigits")
+    ]
+}

@@ -3,6 +3,7 @@ import {
     addFeatureValidator,
     getAllFeaturesValidator,
     getFeatureByIdValidator,
+    getMultipleFeaturesByIdValidator,
     updateFeatureValidator,
 } from "../validators/feature.validators";
 import { checkAccess } from "../middlewares/auth.middleware";
@@ -10,6 +11,7 @@ import {
     addFeature,
     getAllFeatures,
     getFeatureById,
+    getMultipleFeaturesById,
     updateFeature,
 } from "../controllers/feature.controllers";
 import { validateInput } from "../validators";
@@ -23,7 +25,19 @@ router.get(
     getAllFeatures
 );
 
-router.get("/get-feature/:featureId", getFeatureByIdValidator(), validateInput, getFeatureById);
+router.get(
+    "/get-feature/:featureId",
+    getFeatureByIdValidator(),
+    validateInput,
+    getFeatureById
+);
+
+router.post(
+    "/get-multiple-features-by-id",
+    getMultipleFeaturesByIdValidator(),
+    validateInput,
+    getMultipleFeaturesById
+);
 
 router.post(
     "/add-feature",

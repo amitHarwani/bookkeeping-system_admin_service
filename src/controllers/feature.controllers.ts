@@ -1,5 +1,5 @@
 import { platformFeatures } from "db_service";
-import { eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { NextFunction, Request, Response } from "express";
 import { db } from "../db";
 import {
@@ -18,6 +18,10 @@ import {
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import asyncHandler from "../utils/async_handler";
+import {
+    GetMultipleFeaturesByIdRequest,
+    GetMultipleFeaturesByIdResponse,
+} from "../dto/feature/get_multiple_features_by_id_dto";
 
 export const addFeature = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -52,7 +56,7 @@ export const updateFeature = asyncHandler(
             .where(eq(platformFeatures.featureId, body.featureId))
             .returning();
 
-        if(!recordUpdated.length){
+        if (!recordUpdated.length) {
             throw new ApiError(400, "feature not found", []);
         }
 
@@ -100,16 +104,43 @@ export const getFeatureById = asyncHandler(
             .where(eq(platformFeatures.featureId, featureId));
 
         /* If no feature is found */
-        if(!records.length){
+        if (!records.length) {
             throw new ApiError(400, "no feature found", []);
         }
 
-        return res
-            .status(200)
-            .json(
-                new ApiResponse<GetFeatureByIdResponse>(200, {
-                    feature: records[0],
-                })
+        return res.status(200).json(
+            new ApiResponse<GetFeatureByIdResponse>(200, {
+                feature: records[0],
+            })
+        );
+    }
+);
+
+export const getMultipleFeaturesById = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const body = req.body as GetMultipleFeaturesByIdRequest;
+
+        /* If query is passed, creating a SQL condition for it */
+        let customQuery;
+        if (body?.query) {
+            customQuery = eq(platformFeatures.isEnabled, body.query.isEnabled);
+        }
+
+        /* Finding the features with ids passed, and the query */
+        const featuresFound = await db
+            .select()
+            .from(platformFeatures)
+            .where(
+                and(
+                    inArray(platformFeatures.featureId, body.featureIds),
+                    customQuery
+                )
             );
+
+        return res.status(200).json(
+            new ApiResponse<GetMultipleFeaturesByIdResponse>(200, {
+                features: featuresFound,
+            })
+        );
     }
 );

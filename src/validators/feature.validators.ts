@@ -48,3 +48,21 @@ export const getFeatureByIdValidator = () => {
             .withMessage("invalid feature id"),
     ];
 };
+
+export const getMultipleFeaturesByIdValidator = () => {
+    return [
+        body("featureIds")
+            .isArray({ min: 1 })
+            .withMessage("invalid feature ids"),
+        body("query").custom((value) => {
+            if (
+                !value ||
+                (typeof value === "object" &&
+                    typeof value?.isEnabled === "boolean")
+            ) {
+                return true;
+            }
+            throw new Error("invalid query");
+        }),
+    ];
+};

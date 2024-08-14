@@ -8,6 +8,9 @@ export const addFeatureValidator = () => {
             .notEmpty()
             .withMessage("invalid feature name"),
         body("isEnabled").isBoolean().withMessage("invalid isEnabled field"),
+        body("isSystemAdminFeature")
+            .isBoolean()
+            .withMessage("isSystemAdminFeature field not found or invalid"),
     ];
 };
 
@@ -20,6 +23,9 @@ export const updateFeatureValidator = () => {
             .notEmpty()
             .withMessage("invalid feature name"),
         body("isEnabled").isBoolean().withMessage("invalid isEnabled field"),
+        body("isSystemAdminFeature")
+            .isBoolean()
+            .withMessage("isSystemAdminFeature field not found or invalid"),
     ];
 };
 
@@ -29,7 +35,8 @@ export const getAllFeaturesValidator = () => {
             if (
                 !value ||
                 (typeof value === "object" &&
-                    typeof value?.isEnabled === "boolean")
+                    (typeof value?.isEnabled === "boolean" ||
+                        typeof value?.isSystemAdminFeature === "boolean"))
             ) {
                 return true;
             }
@@ -58,7 +65,8 @@ export const getMultipleFeaturesByIdValidator = () => {
             if (
                 !value ||
                 (typeof value === "object" &&
-                    typeof value?.isEnabled === "boolean")
+                    (typeof value?.isEnabled === "boolean" ||
+                        typeof value?.isSystemAdminFeature === "boolean"))
             ) {
                 return true;
             }

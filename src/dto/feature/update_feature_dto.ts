@@ -5,7 +5,8 @@ export class UpdateFeatureRequest {
     constructor(
         public featureId: number,
         public featureName: string,
-        public isEnabled: boolean
+        public isEnabled: boolean,
+        public isSystemAdminFeature: boolean
     ){
 
     }

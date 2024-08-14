@@ -3,7 +3,8 @@ import { PlatformFeature } from "../../db";
 export class AddFeatureRequest {
     constructor(
         public featureName: string,
-        public isEnabled: boolean
+        public isEnabled: boolean,
+        public isSystemAdminFeature: boolean
     ){
 
     }

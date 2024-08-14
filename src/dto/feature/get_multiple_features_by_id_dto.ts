@@ -4,7 +4,8 @@ export class GetMultipleFeaturesByIdRequest {
     constructor(
         public featureIds: Array<number>,
         public query?: {
-            isEnabled: boolean
+            isEnabled?: boolean,
+            isSystemAdminFeature?: boolean
         }
     ){
 

@@ -33,6 +33,7 @@ export const addFeature = asyncHandler(
             .values({
                 featureName: body.featureName,
                 isEnabled: body.isEnabled,
+                isSystemAdminFeature: body.isSystemAdminFeature,
             })
             .returning();
 
@@ -52,7 +53,11 @@ export const updateFeature = asyncHandler(
         /* Updating the featureName and isEnabled flag in platform features table */
         const recordUpdated = await db
             .update(platformFeatures)
-            .set({ featureName: body.featureName, isEnabled: body.isEnabled })
+            .set({
+                featureName: body.featureName,
+                isEnabled: body.isEnabled,
+                isSystemAdminFeature: body.isSystemAdminFeature,
+            })
             .where(eq(platformFeatures.featureId, body.featureId))
             .returning();
 
@@ -75,12 +80,22 @@ export const getAllFeatures = asyncHandler(
 
         let recordsFound;
 
-        /* If query is passed,  search by query (isEnabled flag), else get all records*/
+        /* If query is passed,  search by query (isEnabled flag and systemAdmin), else get all records*/
         if (body?.query) {
+            let isEnabledCheck;
+            let systemAdminCheck;
+            
+            if(body.query?.isEnabled){
+                isEnabledCheck = eq(platformFeatures.isEnabled, body.query.isEnabled);
+            }
+            if(body.query?.isSystemAdminFeature){
+                systemAdminCheck = eq(platformFeatures.isSystemAdminFeature, body.query.isSystemAdminFeature);
+            }
+
             recordsFound = await db
                 .select()
                 .from(platformFeatures)
-                .where(eq(platformFeatures.isEnabled, body.query.isEnabled));
+                .where(and(isEnabledCheck, systemAdminCheck));
         } else {
             recordsFound = await db.select().from(platformFeatures);
         }
@@ -123,7 +138,20 @@ export const getMultipleFeaturesById = asyncHandler(
         /* If query is passed, creating a SQL condition for it */
         let customQuery;
         if (body?.query) {
-            customQuery = eq(platformFeatures.isEnabled, body.query.isEnabled);
+            let isEnabledCheck;
+            let systemAdminCheck;
+            
+            /* If isEnabled is passed in query */
+            if(body.query?.isEnabled){
+                isEnabledCheck = eq(platformFeatures.isEnabled, body.query.isEnabled);
+            }
+            /* If is system admin feature is passed in query */
+            if(body.query?.isSystemAdminFeature){
+                systemAdminCheck = eq(platformFeatures.isSystemAdminFeature, body.query.isSystemAdminFeature);
+            }
+
+            /* Combining the query */
+            customQuery = and(isEnabledCheck, systemAdminCheck);
         }
 
         /* Finding the features with ids passed, and the query */

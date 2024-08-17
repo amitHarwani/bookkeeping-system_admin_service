@@ -64,6 +64,7 @@ export const addCountry = asyncHandler(
                 currency: body.currency,
                 phoneNumberCodes: body.phoneNumberCodes,
                 maxPhoneNumberDigits: body.maxPhoneNumberDigits,
+                timezone: body.timezone
             })
             .returning();
 
@@ -88,6 +89,7 @@ export const updateCountry = asyncHandler(
                 phoneNumberCodes: body.phoneNumberCodes,
                 currency: body.currency,
                 maxPhoneNumberDigits: body.maxPhoneNumberDigits,
+                timezone: body.timezone
             })
             .where(eq(countries.countryId, body.countryId))
             .returning();

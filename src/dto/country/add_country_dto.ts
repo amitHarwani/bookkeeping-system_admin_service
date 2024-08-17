@@ -5,7 +5,8 @@ export class AddCountryRequest {
         public countryName: string,
         public phoneNumberCodes: Array<string>,
         public currency: string,
-        public maxPhoneNumberDigits: number
+        public maxPhoneNumberDigits: number,
+        public timezone: string
     ){
 
     }

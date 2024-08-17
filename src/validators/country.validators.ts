@@ -20,6 +20,13 @@ export const addCountryValidator = () => {
             .notEmpty()
             .withMessage("country name is required")
             .escape(),
+        body("timezone")
+            .isString()
+            .withMessage("invalid timezone")
+            .trim()
+            .notEmpty()
+            .withMessage("timezone is required")
+            .escape(),
         body("phoneNumberCodes").isArray({min: 1}).withMessage("invalid phoneNumberCodes"),
         body("currency").isString().withMessage("invalid currency").trim().notEmpty().withMessage("currency is required").escape(),
         body("maxPhoneNumberDigits").isInt().withMessage("invalid maxPhoneNumberDigits")
@@ -37,6 +44,13 @@ export const updateCountryValidator = () => {
             .trim()
             .notEmpty()
             .withMessage("country name is required")
+            .escape(),
+        body("timezone")
+            .isString()
+            .withMessage("invalid timezone")
+            .trim()
+            .notEmpty()
+            .withMessage("timezone is required")
             .escape(),
         body("phoneNumberCodes").isArray({min: 1}).withMessage("invalid phoneNumberCodes"),
         body("currency").isString().withMessage("invalid currency").trim().notEmpty().withMessage("currency is required").escape(),

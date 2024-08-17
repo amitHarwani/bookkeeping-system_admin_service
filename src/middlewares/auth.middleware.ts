@@ -23,7 +23,7 @@ export const isLoggedIn = asyncHandler(
         if (responseData.data.isLoggedIn) {
             next();
         } else {
-            throw new ApiError(403, "invalid access token", []);
+            throw new ApiError(401, "invalid access token", []);
         }
     }
 );

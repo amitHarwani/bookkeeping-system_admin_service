@@ -34,6 +34,7 @@ export const addFeature = asyncHandler(
                 featureName: body.featureName,
                 isEnabled: body.isEnabled,
                 isSystemAdminFeature: body.isSystemAdminFeature,
+                dependentFeatureId: body?.dependentFeatureId ? body.dependentFeatureId : null
             })
             .returning();
 
@@ -57,6 +58,7 @@ export const updateFeature = asyncHandler(
                 featureName: body.featureName,
                 isEnabled: body.isEnabled,
                 isSystemAdminFeature: body.isSystemAdminFeature,
+                dependentFeatureId: body?.dependentFeatureId ? body.dependentFeatureId : null
             })
             .where(eq(platformFeatures.featureId, body.featureId))
             .returning();

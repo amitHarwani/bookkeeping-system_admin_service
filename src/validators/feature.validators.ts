@@ -11,6 +11,12 @@ export const addFeatureValidator = () => {
         body("isSystemAdminFeature")
             .isBoolean()
             .withMessage("isSystemAdminFeature field not found or invalid"),
+        body("dependentFeatureId").custom((value) => {
+            if (!value || typeof value === "number") {
+                return true;
+            }
+            throw new Error("invalid dependentFeatureId field");
+        }),
     ];
 };
 
@@ -26,6 +32,12 @@ export const updateFeatureValidator = () => {
         body("isSystemAdminFeature")
             .isBoolean()
             .withMessage("isSystemAdminFeature field not found or invalid"),
+        body("dependentFeatureId").custom((value) => {
+            if (!value || typeof value === "number") {
+                return true;
+            }
+            throw new Error("invalid dependentFeatureId field");
+        }),
     ];
 };
 

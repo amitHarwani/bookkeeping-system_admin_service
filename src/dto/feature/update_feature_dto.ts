@@ -6,7 +6,8 @@ export class UpdateFeatureRequest {
         public featureId: number,
         public featureName: string,
         public isEnabled: boolean,
-        public isSystemAdminFeature: boolean
+        public isSystemAdminFeature: boolean,
+        public dependentFeatureId?: number
     ){
 
     }

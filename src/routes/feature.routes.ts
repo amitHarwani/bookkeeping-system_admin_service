@@ -18,7 +18,7 @@ import { validateInput } from "../validators";
 
 const router = Router();
 
-router.get(
+router.post(
     "/get-all-features",
     getAllFeaturesValidator(),
     validateInput,

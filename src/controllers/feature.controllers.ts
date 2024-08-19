@@ -87,10 +87,10 @@ export const getAllFeatures = asyncHandler(
             let isEnabledCheck;
             let systemAdminCheck;
             
-            if(body.query?.isEnabled){
+            if(typeof body.query?.isEnabled === "boolean"){
                 isEnabledCheck = eq(platformFeatures.isEnabled, body.query.isEnabled);
             }
-            if(body.query?.isSystemAdminFeature){
+            if(typeof body.query?.isSystemAdminFeature === "boolean"){
                 systemAdminCheck = eq(platformFeatures.isSystemAdminFeature, body.query.isSystemAdminFeature);
             }
 
@@ -144,11 +144,11 @@ export const getMultipleFeaturesById = asyncHandler(
             let systemAdminCheck;
             
             /* If isEnabled is passed in query */
-            if(body.query?.isEnabled){
+            if(typeof body.query?.isEnabled === "boolean"){
                 isEnabledCheck = eq(platformFeatures.isEnabled, body.query.isEnabled);
             }
             /* If is system admin feature is passed in query */
-            if(body.query?.isSystemAdminFeature){
+            if(typeof body.query?.isSystemAdminFeature === "boolean"){
                 systemAdminCheck = eq(platformFeatures.isSystemAdminFeature, body.query.isSystemAdminFeature);
             }
 

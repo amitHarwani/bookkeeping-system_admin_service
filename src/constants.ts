@@ -5,7 +5,7 @@ export const DEFAULT_COUNTRIES = [
         phoneNumberCodes: ["+97150", "+97155", "+97152", "+97156", "+97158"],
         currency: "AED",
         maxPhoneNumberDigits: 7,
-        timezone: "+04:00",
+        timezone: "Asia/Dubai",
     }
 ]
 export const DEFAULT_TAX_DETAILS = [

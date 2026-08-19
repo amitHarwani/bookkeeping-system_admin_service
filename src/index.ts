@@ -8,6 +8,12 @@ import app from "./app";
 import { ServerCredentials } from "@grpc/grpc-js";
 import grpcServer from "./grpc/grpcapp";
 import logger from "./utils/logger";
+import { initDB } from "./db";
+
+(async () => {
+    await initDB()
+}
+)()
 
 app.listen(process.env.PORT, () => {
     logger.info(`System Admin Service Listening On Port ${process.env.PORT}`);
